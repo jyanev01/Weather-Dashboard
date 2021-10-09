@@ -1,7 +1,7 @@
 // Global variables
 var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
-var weatherApiKey = 'YOUR API KEY HERE';
+var weatherApiKey = '83394e100d62f245cc1222a6e67de282';
 
 // DOM element references
 var searchForm = document.querySelector('#search-form');
