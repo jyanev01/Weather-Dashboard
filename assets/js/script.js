@@ -1,7 +1,7 @@
 // Global variables
 var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
-var weatherApiKey = '83394e100d62f245cc1222a6e67de282';
+var weatherApiKey = '&units=metric&appid=83394e100d62f245cc1222a6e67de282';
 
 // DOM element references
 var searchForm = document.querySelector('#search-form');
@@ -42,13 +42,14 @@ function appendToHistory(/*PARAM*/) {
   }
   searchHistory.push(/*PARAM*/);
 
-  /*SET IN LOCALSTORAGE*/('search-history', JSON.stringify(searchHistory));
+  /*SET IN LOCALSTORAGE*/
+  localStorage('search-history', JSON.stringify(searchHistory));
   renderSearchHistory();
 }
 
 // Function to get search history from local storage
 function initSearchHistory() {
-  var storedHistory = /*GET FROM LOCALSTORAGE*/('search-history');
+  var storedHistory = /*GET FROM LOCALSTORAGE*/storage.getItem(JSON.stringify('search-history'));
   if (storedHistory) {
     // Sets the global var of searchHistory to whatever localstorage had if any
     searchHistory = JSON.parse(storedHistory);
@@ -61,10 +62,10 @@ function renderCurrentWeather(city, weather, timezone) {
   var date = dayjs().tz(timezone).format('M/D/YYYY');
 
   // Store response data from our fetch request in variables
-  var tempF = /*API DATA*/;
-  var windMph = /*API DATA*/;
-  var humidity = /*API DATA*/;
-  var uvi = /*API DATA*/;
+  var tempF = weatherApiRootUrl + '/data/2.5/main.temp?q=' + city +  weatherApiKey /*API DATA*/;
+  var windMph = weatherApiRootUrl + '/data/2.5/wind.speed?q=' + city + weatherApiKey;
+  var humidity = weatherApiRootUrl + 'data/2.5/main.humidity?q=' + city + weatherApiKey/*API DATA*/;
+  var uvi = weatherApiRootUrl + 'data/2.5/visibility.value?q=' + city + weatherApiKey /*API DATA*/;
   var iconUrl = `https://openweathermap.org/img/w/${/*API DATA*/}.png`;
 
   // Create the UI elements as variables
@@ -173,10 +174,10 @@ function renderForecast(dailyForecast, timezone) {
 
   headingCol.setAttribute('class', 'col-12');
   heading.textContent = '5-Day Forecast:';
-  headingCol./*APPEND heading*/;
+  headingCol.appendChild(heading)/*APPEND heading*/;
 
   forecastContainer.innerHTML = '';
-  forecastContainer./*APPEND headingCol*/;
+  forecastContainer.appendTo(headingCol)/*APPEND headingCol*/;
   for (var i = 0; i < dailyForecast.length; i++) {
     // The api returns forecast data which may include 12pm on the same day and
     // always includes the next 7 days. The api documentation does not provide
@@ -201,6 +202,7 @@ function fetchWeather(location) {
   var city = location.name;
   var apiUrl = `${weatherApiRootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`;
 
+  
   /*FETCH APIURL*/
     /*.THEN() CONVERT THE RESPONSE FROM JSON*/
     .then(function (data) {
