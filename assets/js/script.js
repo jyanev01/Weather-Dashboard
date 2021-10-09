@@ -1,5 +1,5 @@
 // Global variables
-var searchHistory = [];
+var searchHistory = ["Houston", "Chicago", "Denver"];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
 var weatherApiKey = '&units=metric&appid=83394e100d62f245cc1222a6e67de282';
 
@@ -21,19 +21,20 @@ function renderSearchHistory() {
 
 
   // Start at end of history array and count down to show the most recent at the top.
-  for (var i = /*SOMETHING*/ - 1; i >= 0; i--) {
+  for (var i = searchHistory.length - 1; i >= 0; i--) {
     /*CREATE BTN*/
+    var btn = document.createElement('button');
     btn.setAttribute('type', 'button');
     btn.setAttribute('aria-controls', 'today forecast');
     btn.classList.add('history-btn', 'btn-history');
 
     // `data-search` allows access to city name when click handler is invoked
-    btn.setAttribute('data-search', /*SOMETHING*/);
-    btn.textContent = /*SOMETHING*/;
-    /*APPEND BTN*/;
+    btn.setAttribute('data-search', searchHistory[i]);
+    btn.textContent = searchHistory[i];
+    searchHistoryContainer.appendChild(btn);
   }
 }
-
+// renderSearchHistory();
 // Function to update history in local storage then updates displayed history.
 function appendToHistory(/*PARAM*/) {
   // If there is no search term return the function
@@ -61,41 +62,42 @@ function initSearchHistory() {
 function renderCurrentWeather(city, weather, timezone) {
   var date = dayjs().tz(timezone).format('M/D/YYYY');
 
+  console.log(weather)
   // Store response data from our fetch request in variables
-  var tempF = weatherApiRootUrl + '/data/2.5/main.temp?q=' + city +  weatherApiKey /*API DATA*/;
-  var windMph = weatherApiRootUrl + '/data/2.5/wind.speed?q=' + city + weatherApiKey;
-  var humidity = weatherApiRootUrl + 'data/2.5/main.humidity?q=' + city + weatherApiKey/*API DATA*/;
-  var uvi = weatherApiRootUrl + 'data/2.5/visibility.value?q=' + city + weatherApiKey /*API DATA*/;
-  var iconUrl = `https://openweathermap.org/img/w/${/*API DATA*/}.png`;
+  var tempF = weather.current.main.temp
+  var windMph = weather.current.wind.speed;
+  var humidity = weather.current.main.humidity;
+  var uvi = weather.current.visibility.value;
+  var iconUrl = `https://openweathermap.org/img/w/${weather[0].current.icon/*API DATA*/}.png`;
 
   // Create the UI elements as variables
-  var card = /*SOMETHING*/;
-  var cardBody = /*SOMETHING*/;
-  var heading = /*SOMETHING*/;
-  var weatherIcon = /*SOMETHING*/;
-  var tempEl = /*SOMETHING*/;
-  var windEl = /*SOMETHING*/;
-  var humidityEl = /*SOMETHING*/;
-  var uvEl = /*SOMETHING*/;
-  var uviBadge = /*SOMETHING*/;
+  var card = document.createElement("<div>");
+  var cardBody =document.createElement("<div>") /*SOMETHING*/;
+  var heading = document.createElement("<h3>");
+  var weatherIcon = createElement('<div>'>)/*SOMETHING*/;
+  var tempEl = createElement('<p>');
+  var windEl = createElement('<p>');
+  var humidityEl = createElement('<p>');
+  var uvEl = createElement('<p>');
+  var uviBadge = createElement('img');
 
   card.setAttribute('class', 'card');
   cardBody.setAttribute('class', 'card-body');
-  card./*APPEND CARDBODY*/;
+  card.appendChild(cardBody);
 
   heading.setAttribute('class', 'h3 card-title');
   tempEl.setAttribute('class', 'card-text');
   windEl.setAttribute('class', 'card-text');
   humidityEl.setAttribute('class', 'card-text');
 
-  heading.textContent = /*set text = City, Date*/;
+  heading.textContent = City +',' + Date/*set text = City, Date*/;
   weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('class', 'weather-img');
-  heading./*APPEND weatherIcon*/;
-  tempEl.textContent = /*set text = tempF*/;
-  windEl.textContent = /*set text = windMph*/;
-  humidityEl.textContent = /*set text = humidity*/;
-  cardBody./*APPEND heading, tempEl, windEl, humidityEl)*/;
+  heading.appendChild(weatherIcon)/*APPEND weatherIcon*/;
+  tempEl.textContent = tempF + ' C'/*set text = tempF*/;
+  windEl.textContent = windMph + ' KPH' /*set text = windMph*/;
+  humidityEl.textContent = humidityEl + ' %'/*set text = humidity*/;
+  cardBody.appendChild(card)/*APPEND heading, tempEl, windEl, humidityEl)*/;
 
   uvEl.textContent = 'UV Index: ';
   uviBadge.classList.add('btn', 'btn-sm');
@@ -110,11 +112,11 @@ function renderCurrentWeather(city, weather, timezone) {
   }
 
   uviBadge.textContent = uvi;
-  uvEl./*APPEND uviBadge*/;
-  cardBody./*APPEND uviEl*/;
+  uvEl.appendChild(uviBadge)/*APPEND uviBadge*/;
+  cardBody.appendChild(uviEl)/*APPEND uviEl*/;
 
-  todayContainer.innerHTML = /*SET BLANK*/;
-  todayContainer./*APPEND card*/;
+  todayContainer.innerHTML = ""/*SET BLANK*/;
+  todayContainer.appendChild(card)/*APPEND card*/;
 }
 
 // Function to display a forecast card given an object from open weather api
@@ -124,23 +126,23 @@ function renderForecastCard(forecast, timezone) {
   var unixTs = forecast.dt;
   var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
   var iconDescription = forecast.weather[0].description;
-  var tempF = /*TRAVERSE forecast to find out*/;
-  var { humidity } = /*TRAVERSE forecast to find out*/;
-  var windMph = /*TRAVERSE forecast to find out*/;
+  var tempF = forecast.main.temp;
+  var { humidity } = forecast.main.humidity/*TRAVERSE forecast to find out*/;
+  var windMph = forecast.wind.speed/*TRAVERSE forecast to find out*/;
 
   // Create elements for a card
-  var col = /*SOMETHING*/;
-  var card = /*SOMETHING*/;
-  var cardBody = /*SOMETHING*/;
-  var cardTitle = /*SOMETHING*/;
-  var weatherIcon = /*SOMETHING*/;
-  var tempEl = /*SOMETHING*/;
-  var windEl = /*SOMETHING*/;
-  var humidityEl = /*SOMETHING*/;
+  var col = createElement('<div>')/*SOMETHING*/;
+  var card = createElement('<div>')/*SOMETHING*/;
+  var cardBody = createElement('<div>')/*SOMETHING*/;
+  var cardTitle = createElement('<div>')/*SOMETHING*/;
+  var weatherIcon = createElement('img') /*SOMETHING*/;
+  var tempEl = createElement('<p>')/*SOMETHING*/;
+  var windEl = createElement('<p>')/*SOMETHING*/;
+  var humidityEl = createElement('<p>')/*SOMETHING*/;
 
-  col./*APPEND CARD*/;
-  card./*APPEND CARDBODY*/
-  cardBody./*APPEND cardTitle, weatherIcon, tempEl, windEl, humidityEl*/;
+  col.appendChild(card)/*APPEND CARD*/;
+  card.appendChild(cardBody)/*APPEND CARDBODY*/
+  cardBody.appendChild(card)/*APPEND cardTitle, weatherIcon, tempEl, windEl, humidityEl*/;
 
   col.setAttribute('class', 'col-md');
   col.classList.add('five-day-card');
@@ -155,11 +157,11 @@ function renderForecastCard(forecast, timezone) {
   cardTitle.textContent = dayjs.unix(unixTs).tz(timezone).format('M/D/YYYY');
   weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('alt', iconDescription);
-  tempEl.textContent = /*set text = tempF*/;
-  windEl.textContent = /*set text = windMph*/;
-  humidityEl.textContent = /*set text = humidity*/;
+  tempEl.textContent = tempF + ' C'/*set text = tempF*/;
+  windEl.textContent = windMph + ' KPH' /*set text = windMph*/ ;
+  humidityEl.textContent = { humidity } + ' %'/*set text = humidity*/ ;
 
-  forecastContainer./*APPEND col*/;
+  forecastContainer.appendChild(col)/*APPEND col*/;
 }
 
 // Function to display 5 day forecast.
@@ -169,12 +171,12 @@ function renderForecast(dailyForecast, timezone) {
   var endDt = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
 
   // Create elements
-  var headingCol = /*SOMETHING*/;
-  var heading = /*SOMETHING*/;
+  var headingCol = createElement ('<div>') /*SOMETHING*/;
+  var heading = createElement ('<div>')/*SOMETHING*/;
 
   headingCol.setAttribute('class', 'col-12');
   heading.textContent = '5-Day Forecast:';
-  headingCol.appendChild(heading)/*APPEND heading*/;
+  headingCol.appendTo(heading)/*APPEND heading*/;
 
   forecastContainer.innerHTML = '';
   forecastContainer.appendTo(headingCol)/*APPEND headingCol*/;
@@ -205,6 +207,7 @@ function fetchWeather(location) {
   
   /*FETCH APIURL*/
     /*.THEN() CONVERT THE RESPONSE FROM JSON*/
+    fetch(apiUrl)
     .then(function (data) {
       renderItems(city, data);
     })
@@ -218,6 +221,8 @@ function fetchCoords(search) {
 
   /*FETCH APIURL*/
     /*.THEN() CONVERT THE RESPONSE FROM JSON*/
+    // .then(JSON.parse(apiUrl))
+    fetch(apiUrl)
     .then(function (data) {
       if (!data[0]) {
         alert('Location not found');
