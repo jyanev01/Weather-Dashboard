@@ -1,7 +1,7 @@
 // Global variables
 var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
-var weatherApiKey = '&units=metric&appid=83394e100d62f245cc1222a6e67de282';
+var weatherApiKey = '83394e100d62f245cc1222a6e67de282';
 
 // DOM element references
 var searchForm = document.querySelector('#search-form');
@@ -35,10 +35,11 @@ function renderSearchHistory() {
   }
 }
 // renderSearchHistory();
+
 // Function to update history in local storage then updates displayed history.
-function appendToHistory(/*PARAM*/) {
+function appendToHistory(searchHistory/*PARAM*/) {
   // If there is no search term return the function
-  if (searchHistory.indexOf(/*PARAM*/) !== -1) {
+  if (searchHistory.indexOf(searchHistory/*PARAM*/) !== -1) {
     return;
   }
   searchHistory.push(/*PARAM*/);
@@ -50,7 +51,7 @@ function appendToHistory(/*PARAM*/) {
 
 // Function to get search history from local storage
 function initSearchHistory() {
-  var storedHistory = /*GET FROM LOCALSTORAGE*/storage.getItem(JSON.stringify('search-history'));
+  var storedHistory = /*GET FROM LOCALSTORAGE*/localStorage.getItem(JSON.stringify('search-history'));
   if (storedHistory) {
     // Sets the global var of searchHistory to whatever localstorage had if any
     searchHistory = JSON.parse(storedHistory);
@@ -90,7 +91,7 @@ function renderCurrentWeather(city, weather, timezone) {
   windEl.setAttribute('class', 'card-text');
   humidityEl.setAttribute('class', 'card-text');
 
-  heading.textContent = City +',' + Date/*set text = City, Date*/;
+  heading.textContent = city +',' + date/*set text = City, Date*/;
   weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('class', 'weather-img');
   heading.appendChild(weatherIcon)/*APPEND weatherIcon*/;
@@ -112,12 +113,13 @@ function renderCurrentWeather(city, weather, timezone) {
   }
 
   uviBadge.textContent = uvi;
-  uvEl.appendChild(uviBadge)/*APPEND uviBadge*/;
-  cardBody.appendChild(uviEl)/*APPEND uviEl*/;
+  uvEl.appendTo(uviBadge)/*APPEND uviBadge*/;
+  cardBody.appendTo(uviEl)/*APPEND uviEl*/;
 
   todayContainer.innerHTML = ""/*SET BLANK*/;
-  todayContainer.appendChild(card)/*APPEND card*/;
+  todayContainer.appendTo(card)/*APPEND card*/;
 }
+// renderCurrentWeather();
 
 // Function to display a forecast card given an object from open weather api
 // daily forecast.
@@ -221,8 +223,7 @@ function fetchCoords(search) {
 
   /*FETCH APIURL*/
     /*.THEN() CONVERT THE RESPONSE FROM JSON*/
-    // .then(JSON.parse(apiUrl))
-    fetch(apiUrl)
+        fetch(apiUrl)
     .then(function (data) {
       if (!data[0]) {
         alert('Location not found');
