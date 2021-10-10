@@ -12,3 +12,4 @@ THEN I am presented with a 5-day forecast that displays the date, an icon repres
 WHEN I click on a city in the search history
 THEN I am again presented with current and future conditions for that city
 
+![06-server-side-apis-homework-demo](https://user-images.githubusercontent.com/86720945/136695359-a47d296b-7455-463e-80e9-1c0f8350084f.png)
