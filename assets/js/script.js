@@ -2,9 +2,9 @@
 var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
 var weatherApiKey = '83394e100d62f245cc1222a6e67de282';
-// var weather
-// var city
-// var timezone
+// var weather = '/data/2.5/weather.main?='
+// var city= 'data/2.5/weather?q='
+// var timezone= 'data/2.5/name?q='
 
 // DOM element references
 var searchForm = document.querySelector('#search-form');
@@ -68,26 +68,28 @@ function initSearchHistory() {
 function renderCurrentWeather(city, weather, timezone) {
   var date = dayjs().tz(timezone).format('M/D/YYYY');
 
-  console.log(weather)
-  console.log(city)
-  console.log(timezone)
   // Store response data from our fetch request in variables
-  var tempF = weather.current.base.main.temp
-  var windMph = weather.current.wind.speed;
-  var humidity = weather.current.main.humidity;
-  var uvi = weather.current.visibility.value;
-  var iconUrl = `https://openweathermap.org/img/w/${weather[0].current.icon/*API DATA*/}.png`;
+  // var tempF = weather.current.main.temp
+  var tempF = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.temp' + '&unit=metric' + '&appid=' + weatherApiKey 
+  // var windMph = weather.current.wind.speed;
+  var windMph = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&wind.speed' + '&unit=imperial' + '&appid=' + weatherApiKey 
+  // var humidity = weather.current.main.humidity;
+  var humidity = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.humidity' + '&unit=metric' + '&appid=' + weatherApiKey 
+  // var uvi = weather.current.visibility.value;
+  var uvi = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&visibility.value' + '&unit=metric' + '&appid=' + weatherApiKey 
+
+  // var iconUrl = `https://openweathermap.org/img/w/${weather[0].current.icon/*API DATA*/}.png`;
 
   // Create the UI elements as variables
-  var card = document.createElement("<div>");
-  var cardBody =document.createElement("<div>") /*SOMETHING*/;
-  var heading = document.createElement("<h3>");
-  var weatherIcon = createElement('<div>')/*SOMETHING*/;
-  var tempEl = createElement('<p>');
-  var windEl = createElement('<p>');
-  var humidityEl = createElement('<p>');
-  var uvEl = createElement('<p>');
-  var uviBadge = createElement('img');
+  var card = document.createElement("div");
+  var cardBody =document.createElement("div") /*SOMETHING*/;
+  var heading = document.createElement("h3");
+  var weatherIcon = document.createElement("div")/*SOMETHING*/;
+  var tempEl = document.createElement('p');
+  var windEl = document.createElement('p');
+  var humidityEl = document.createElement('p');
+  var uvEl = document.createElement('p');
+  var uviBadge = document.createElement('img');
 
   card.setAttribute('class', 'card');
   cardBody.setAttribute('class', 'card-body');
@@ -99,13 +101,13 @@ function renderCurrentWeather(city, weather, timezone) {
   humidityEl.setAttribute('class', 'card-text');
 
   heading.textContent = city +',' + date/*set text = City, Date*/;
-  weatherIcon.setAttribute('src', iconUrl);
+  // weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('class', 'weather-img');
   heading.appendChild(weatherIcon)/*APPEND weatherIcon*/;
   tempEl.textContent = tempF + ' C'/*set text = tempF*/;
   windEl.textContent = windMph + ' KPH' /*set text = windMph*/;
   humidityEl.textContent = `${humidity}' %` /*set text = humidity*/;
-  cardBody.appendChild(card)/*APPEND heading, tempEl, windEl, humidityEl)*/;
+  cardBody.appendChild(heading)/*APPEND heading, tempEl, windEl, humidityEl)*/;
 
   uvEl.textContent = 'UV Index: ';
   uviBadge.classList.add('btn', 'btn-sm');
@@ -120,11 +122,11 @@ function renderCurrentWeather(city, weather, timezone) {
   }
 
   uviBadge.textContent = uvi;
-  uvEl.appendTo(uviBadge)/*APPEND uviBadge*/;
-  cardBody.appendTo(uvEl)/*APPEND uviEl*/;
+  uvEl.appendChild(uviBadge)/*APPEND uviBadge*/;
+  cardBody.appendChild(uvEl)/*APPEND uviEl*/;
 
   todayContainer.innerHTML = ""/*SET BLANK*/;
-  todayContainer.appendTo(card)/*APPEND card*/;
+  todayContainer.appendChild(card)/*APPEND card*/;
 }
 renderCurrentWeather();
 console.log(renderCurrentWeather);
