@@ -2,6 +2,9 @@
 var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
 var weatherApiKey = '83394e100d62f245cc1222a6e67de282';
+// var weather
+// var city
+// var timezone
 
 // DOM element references
 var searchForm = document.querySelector('#search-form');
@@ -37,7 +40,7 @@ function renderSearchHistory() {
 // renderSearchHistory();
 
 // Function to update history in local storage then updates displayed history.
-function appendToHistory(searchHistory/*PARAM*/) {
+function appendToHistory(/*PARAM*/) {
   // If there is no search term return the function
   if (searchHistory.indexOf(searchHistory/*PARAM*/) !== -1) {
     return;
@@ -48,6 +51,8 @@ function appendToHistory(searchHistory/*PARAM*/) {
   localStorage('search-history', JSON.stringify(searchHistory));
   renderSearchHistory();
 }
+
+// console.log();
 
 // Function to get search history from local storage
 function initSearchHistory() {
@@ -64,8 +69,10 @@ function renderCurrentWeather(city, weather, timezone) {
   var date = dayjs().tz(timezone).format('M/D/YYYY');
 
   console.log(weather)
+  console.log(city)
+  console.log(timezone)
   // Store response data from our fetch request in variables
-  var tempF = weather.current.main.temp
+  var tempF = weather.current.base.main.temp
   var windMph = weather.current.wind.speed;
   var humidity = weather.current.main.humidity;
   var uvi = weather.current.visibility.value;
@@ -97,7 +104,7 @@ function renderCurrentWeather(city, weather, timezone) {
   heading.appendChild(weatherIcon)/*APPEND weatherIcon*/;
   tempEl.textContent = tempF + ' C'/*set text = tempF*/;
   windEl.textContent = windMph + ' KPH' /*set text = windMph*/;
-  humidityEl.textContent = humidityEl + ' %'/*set text = humidity*/;
+  humidityEl.textContent = `${humidity}' %` /*set text = humidity*/;
   cardBody.appendChild(card)/*APPEND heading, tempEl, windEl, humidityEl)*/;
 
   uvEl.textContent = 'UV Index: ';
@@ -114,12 +121,13 @@ function renderCurrentWeather(city, weather, timezone) {
 
   uviBadge.textContent = uvi;
   uvEl.appendTo(uviBadge)/*APPEND uviBadge*/;
-  cardBody.appendTo(uviEl)/*APPEND uviEl*/;
+  cardBody.appendTo(uvEl)/*APPEND uviEl*/;
 
   todayContainer.innerHTML = ""/*SET BLANK*/;
   todayContainer.appendTo(card)/*APPEND card*/;
 }
-// renderCurrentWeather();
+renderCurrentWeather();
+console.log(renderCurrentWeather);
 
 // Function to display a forecast card given an object from open weather api
 // daily forecast.
