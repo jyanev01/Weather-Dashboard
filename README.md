@@ -1,5 +1,11 @@
 # Weather-Dashboard
 
+This applicatoin allows the user the enter the name of a city in the serach field and display the current weather conditions. Temperature, humidity, UV index and an icon depicting the current weather- clear, cloudy or rainning. Additionally, a 5-day forecast is displayed.
+
+Each time a new search is requested, the app save the prior city untill the "clear history" button removes all prior searches. The prior data is saved in local storage.
+
+
+Instructions:
 GIVEN a weather dashboard with form inputs
 WHEN I search for a city
 THEN I am presented with current and future conditions for that city and that city is added to the search history
