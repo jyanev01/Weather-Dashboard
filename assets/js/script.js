@@ -1,5 +1,5 @@
 // Global variables
-var searchHistory = ["Houston", "Chicago", "Denver"];
+var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
 var weatherApiKey = '&units=metric&appid=83394e100d62f245cc1222a6e67de282';
 
