@@ -74,7 +74,7 @@ function renderCurrentWeather(city, weather, timezone) {
   var card = document.createElement("<div>");
   var cardBody =document.createElement("<div>") /*SOMETHING*/;
   var heading = document.createElement("<h3>");
-  var weatherIcon = createElement('<div>'>)/*SOMETHING*/;
+  var weatherIcon = createElement('<div>')/*SOMETHING*/;
   var tempEl = createElement('<p>');
   var windEl = createElement('<p>');
   var humidityEl = createElement('<p>');
