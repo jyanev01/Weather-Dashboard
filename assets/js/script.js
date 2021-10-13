@@ -2,6 +2,7 @@
 var searchHistory = [];
 var weatherApiRootUrl = 'https://api.openweathermap.org';
 var weatherApiKey = '83394e100d62f245cc1222a6e67de282';
+// 83394e100d62f245cc1222a6e67de282
 // var weather = '/data/2.5/weather.main?='
 // var city= 'data/2.5/weather?q='
 // var timezone= 'data/2.5/name?q='
@@ -40,15 +41,15 @@ function renderSearchHistory() {
 // renderSearchHistory();
 
 // Function to update history in local storage then updates displayed history.
-function appendToHistory(/*PARAM*/) {
+function appendToHistory(location) {
   // If there is no search term return the function
-  if (searchHistory.indexOf(searchHistory/*PARAM*/) !== -1) {
+  if (searchHistory.indexOf(location) !== -1) {
     return;
   }
-  searchHistory.push(/*PARAM*/);
+  searchHistory.push(location);
 
   /*SET IN LOCALSTORAGE*/
-  localStorage('search-history', JSON.stringify(searchHistory));
+  localStorage.setItem('search-history', JSON.stringify(searchHistory));
   renderSearchHistory();
 }
 
@@ -67,22 +68,22 @@ function initSearchHistory() {
 // Function to display the current weather data fetched from OpenWeather api.
 function renderCurrentWeather(city, weather, timezone) {
   var date = dayjs().tz(timezone).format('M/D/YYYY');
-
+  console.log(weather);
   // Store response data from our fetch request in variables
   // var tempF = weather.current.main.temp
-  var tempF = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.temp' + '&unit=metric' + '&appid=' + weatherApiKey 
+  var tempF = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.temp' + '&unit=metric' + '&appid=' + weatherApiKey
   // var windMph = weather.current.wind.speed;
-  var windMph = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&wind.speed' + '&unit=imperial' + '&appid=' + weatherApiKey 
+  var windMph = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&wind.speed' + '&unit=imperial' + '&appid=' + weatherApiKey
   // var humidity = weather.current.main.humidity;
-  var humidity = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.humidity' + '&unit=metric' + '&appid=' + weatherApiKey 
+  var humidity = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.humidity' + '&unit=metric' + '&appid=' + weatherApiKey
   // var uvi = weather.current.visibility.value;
-  var uvi = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&visibility.value' + '&unit=metric' + '&appid=' + weatherApiKey 
+  var uvi = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&visibility.value' + '&unit=metric' + '&appid=' + weatherApiKey
 
   // var iconUrl = `https://openweathermap.org/img/w/${weather[0].current.icon/*API DATA*/}.png`;
 
   // Create the UI elements as variables
   var card = document.createElement("div");
-  var cardBody =document.createElement("div") /*SOMETHING*/;
+  var cardBody = document.createElement("div") /*SOMETHING*/;
   var heading = document.createElement("h3");
   var weatherIcon = document.createElement("div")/*SOMETHING*/;
   var tempEl = document.createElement('p');
@@ -100,7 +101,7 @@ function renderCurrentWeather(city, weather, timezone) {
   windEl.setAttribute('class', 'card-text');
   humidityEl.setAttribute('class', 'card-text');
 
-  heading.textContent = city +',' + date/*set text = City, Date*/;
+  heading.textContent = city + ',' + date/*set text = City, Date*/;
   // weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('class', 'weather-img');
   heading.appendChild(weatherIcon)/*APPEND weatherIcon*/;
@@ -128,19 +129,18 @@ function renderCurrentWeather(city, weather, timezone) {
   todayContainer.innerHTML = ""/*SET BLANK*/;
   todayContainer.appendChild(card)/*APPEND card*/;
 }
-renderCurrentWeather();
-console.log(renderCurrentWeather);
 
 // Function to display a forecast card given an object from open weather api
 // daily forecast.
 function renderForecastCard(forecast, timezone) {
   // variables for data from api
+  console.log(forecast)
   var unixTs = forecast.dt;
   var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
   var iconDescription = forecast.weather[0].description;
-  var tempF = forecast.main.temp;
-  var { humidity } = forecast.main.humidity/*TRAVERSE forecast to find out*/;
-  var windMph = forecast.wind.speed/*TRAVERSE forecast to find out*/;
+  var tempF = forecast.temp.day;
+  var { humidity } = forecast.humidity/*TRAVERSE forecast to find out*/;
+  var windMph = forecast.wind_speed/*TRAVERSE forecast to find out*/;
 
   // Create elements for a card
   var col = createElement('<div>')/*SOMETHING*/;
@@ -170,8 +170,8 @@ function renderForecastCard(forecast, timezone) {
   weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('alt', iconDescription);
   tempEl.textContent = tempF + ' C'/*set text = tempF*/;
-  windEl.textContent = windMph + ' KPH' /*set text = windMph*/ ;
-  humidityEl.textContent = { humidity } + ' %'/*set text = humidity*/ ;
+  windEl.textContent = windMph + ' KPH' /*set text = windMph*/;
+  humidityEl.textContent = { humidity } + ' %'/*set text = humidity*/;
 
   forecastContainer.appendChild(col)/*APPEND col*/;
 }
@@ -183,15 +183,15 @@ function renderForecast(dailyForecast, timezone) {
   var endDt = dayjs().tz(timezone).add(6, 'day').startOf('day').unix();
 
   // Create elements
-  var headingCol = createElement ('<div>') /*SOMETHING*/;
-  var heading = createElement ('<div>')/*SOMETHING*/;
+  var headingCol = document.createElement('div') /*SOMETHING*/;
+  var heading = document.createElement('div')/*SOMETHING*/;
 
   headingCol.setAttribute('class', 'col-12');
   heading.textContent = '5-Day Forecast:';
-  headingCol.appendTo(heading)/*APPEND heading*/;
+  headingCol.appendChild(heading)/*APPEND heading*/;
 
   forecastContainer.innerHTML = '';
-  forecastContainer.appendTo(headingCol)/*APPEND headingCol*/;
+  forecastContainer.appendChild(headingCol)/*APPEND headingCol*/;
   for (var i = 0; i < dailyForecast.length; i++) {
     // The api returns forecast data which may include 12pm on the same day and
     // always includes the next 7 days. The api documentation does not provide
@@ -216,11 +216,15 @@ function fetchWeather(location) {
   var city = location.name;
   var apiUrl = `${weatherApiRootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`;
 
-  
+
   /*FETCH APIURL*/
-    /*.THEN() CONVERT THE RESPONSE FROM JSON*/
-    fetch(apiUrl)
+  /*.THEN() CONVERT THE RESPONSE FROM JSON*/
+  fetch(apiUrl)
+    .then(function (response) {
+      return response.json();
+    })
     .then(function (data) {
+      console.log(data)
       renderItems(city, data);
     })
     .catch(function (err) {
@@ -230,11 +234,18 @@ function fetchWeather(location) {
 
 function fetchCoords(search) {
   var apiUrl = `${weatherApiRootUrl}/geo/1.0/direct?q=${search}&limit=5&appid=${weatherApiKey}`;
-
+  // var testUrl= 'http://api.openweathermap.org/geo/1.0/direct?q=richmond&limit=5&appid=83394e100d62f245cc1222a6e67de282';
   /*FETCH APIURL*/
-    /*.THEN() CONVERT THE RESPONSE FROM JSON*/
-        fetch(apiUrl)
+  /*.THEN() CONVERT THE RESPONSE FROM JSON*/
+  var test = localStorage.getItem("searchHistory")
+  console.log({test});
+
+  fetch(apiUrl)
+    .then(function (response) {
+      return response.json();
+    })
     .then(function (data) {
+      console.log(data);
       if (!data[0]) {
         alert('Location not found');
       } else {
@@ -255,6 +266,7 @@ function handleSearchFormSubmit(e) {
 
   e.preventDefault();
   var search = searchInput.value.trim();
+  console.log({ search });
   fetchCoords(search);
   searchInput.value = '';
 }
