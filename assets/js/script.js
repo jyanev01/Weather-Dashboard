@@ -143,7 +143,7 @@ function renderForecastCard(forecast, timezone) {
   var windMph = forecast.wind_speed/*TRAVERSE forecast to find out*/;
 
   // Create elements for a card
-  var col = createElement('<div>')/*SOMETHING*/;
+  var col = document.createElement('div')/*SOMETHING*/;
   var card = createElement('<div>')/*SOMETHING*/;
   var cardBody = createElement('<div>')/*SOMETHING*/;
   var cardTitle = createElement('<div>')/*SOMETHING*/;
