@@ -139,22 +139,22 @@ function renderForecastCard(forecast, timezone) {
   var iconUrl = `https://openweathermap.org/img/w/${forecast.weather[0].icon}.png`;
   var iconDescription = forecast.weather[0].description;
   var tempF = forecast.temp.day;
-  var { humidity } = forecast.humidity/*TRAVERSE forecast to find out*/;
+  var humidity = forecast.humidity/*TRAVERSE forecast to find out*/;
   var windMph = forecast.wind_speed/*TRAVERSE forecast to find out*/;
 
   // Create elements for a card
   var col = document.createElement('div')/*SOMETHING*/;
-  var card = createElement('<div>')/*SOMETHING*/;
-  var cardBody = createElement('<div>')/*SOMETHING*/;
-  var cardTitle = createElement('<div>')/*SOMETHING*/;
-  var weatherIcon = createElement('img') /*SOMETHING*/;
-  var tempEl = createElement('<p>')/*SOMETHING*/;
-  var windEl = createElement('<p>')/*SOMETHING*/;
-  var humidityEl = createElement('<p>')/*SOMETHING*/;
+  var card = document.createElement('div')/*SOMETHING*/;
+  var cardBody = document.createElement('div')/*SOMETHING*/;
+  var cardTitle = document.createElement('div')/*SOMETHING*/;
+  var weatherIcon = document.createElement('img') /*SOMETHING*/;
+  var tempEl = document.createElement('p')/*SOMETHING*/;
+  var windEl = document.createElement('p')/*SOMETHING*/;
+  var humidityEl = document.createElement('p')/*SOMETHING*/;
 
-  col.appendChild(card)/*APPEND CARD*/;
-  card.appendChild(cardBody)/*APPEND CARDBODY*/
-  cardBody.appendChild(card)/*APPEND cardTitle, weatherIcon, tempEl, windEl, humidityEl*/;
+  col.append(card)/*APPEND CARD*/;
+  card.append(cardBody)/*APPEND CARDBODY*/
+  cardBody.append(cardTitle, weatherIcon, tempEl, windEl, humidityEl)/*APPEND cardTitle, weatherIcon, tempEl, windEl, humidityEl*/;
 
   col.setAttribute('class', 'col-md');
   col.classList.add('five-day-card');
@@ -171,9 +171,9 @@ function renderForecastCard(forecast, timezone) {
   weatherIcon.setAttribute('alt', iconDescription);
   tempEl.textContent = tempF + ' C'/*set text = tempF*/;
   windEl.textContent = windMph + ' KPH' /*set text = windMph*/;
-  humidityEl.textContent = { humidity } + ' %'/*set text = humidity*/;
+  humidityEl.textContent = humidity + ' %'/*set text = humidity*/;
 
-  forecastContainer.appendChild(col)/*APPEND col*/;
+  forecastContainer.append(col)/*APPEND col*/;
 }
 
 // Function to display 5 day forecast.
@@ -188,10 +188,10 @@ function renderForecast(dailyForecast, timezone) {
 
   headingCol.setAttribute('class', 'col-12');
   heading.textContent = '5-Day Forecast:';
-  headingCol.appendChild(heading)/*APPEND heading*/;
+  headingCol.append(heading)/*APPEND heading*/;
 
   forecastContainer.innerHTML = '';
-  forecastContainer.appendChild(headingCol)/*APPEND headingCol*/;
+  forecastContainer.append(headingCol)/*APPEND headingCol*/;
   for (var i = 0; i < dailyForecast.length; i++) {
     // The api returns forecast data which may include 12pm on the same day and
     // always includes the next 7 days. The api documentation does not provide
