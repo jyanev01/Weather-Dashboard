@@ -70,27 +70,30 @@ function renderCurrentWeather(city, weather, timezone) {
   var date = dayjs().tz(timezone).format('M/D/YYYY');
   console.log(weather);
   // Store response data from our fetch request in variables
-  // var tempF = weather.current.main.temp
-  var tempF = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.temp' + '&unit=metric' + '&appid=' + weatherApiKey
-  // var windMph = weather.current.wind.speed;
-  var windMph = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&wind.speed' + '&unit=imperial' + '&appid=' + weatherApiKey
-  // var humidity = weather.current.main.humidity;
-  var humidity = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.humidity' + '&unit=metric' + '&appid=' + weatherApiKey
-  // var uvi = weather.current.visibility.value;
-  var uvi = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&visibility.value' + '&unit=metric' + '&appid=' + weatherApiKey
-
-  // var iconUrl = `https://openweathermap.org/img/w/${weather[0].current.icon/*API DATA*/}.png`;
-
+  var tempF = weather.temp
+  // var tempF = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.temp' + '&unit=metric' + '&appid=' + weatherApiKey
+  var windMph = weather.wind_speed;
+  // var windMph = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&wind.speed' + '&unit=imperial' + '&appid=' + weatherApiKey
+  var humidity = weather.humidity;
+  // var humidity = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&main.humidity' + '&unit=metric' + '&appid=' + weatherApiKey
+  var uvi = weather.uvi;
+  // var uvi = weatherApiRootUrl + '/data/2.5/weather?=' + city + '&visibility.value' + '&unit=metric' + '&appid=' + weatherApiKey
+  console.log(tempF);
+  console.log(windMph);
+  console.log(humidity);
+  console.log(uvi);
+  var iconUrl = `https://openweathermap.org/img/w/${weather.weather[0].icon}.png`;
+  console.log(iconUrl)
   // Create the UI elements as variables
   var card = document.createElement("div");
   var cardBody = document.createElement("div") /*SOMETHING*/;
   var heading = document.createElement("h3");
-  var weatherIcon = document.createElement("div")/*SOMETHING*/;
+  var weatherIcon = document.createElement("img")/*SOMETHING*/;
   var tempEl = document.createElement('p');
   var windEl = document.createElement('p');
   var humidityEl = document.createElement('p');
   var uvEl = document.createElement('p');
-  var uviBadge = document.createElement('img');
+  var uviBadge = document.createElement('button');
 
   card.setAttribute('class', 'card');
   cardBody.setAttribute('class', 'card-body');
@@ -102,13 +105,16 @@ function renderCurrentWeather(city, weather, timezone) {
   humidityEl.setAttribute('class', 'card-text');
 
   heading.textContent = city + ',' + date/*set text = City, Date*/;
-  // weatherIcon.setAttribute('src', iconUrl);
+  weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('class', 'weather-img');
   heading.appendChild(weatherIcon)/*APPEND weatherIcon*/;
-  tempEl.textContent = tempF + ' C'/*set text = tempF*/;
-  windEl.textContent = windMph + ' KPH' /*set text = windMph*/;
-  humidityEl.textContent = `${humidity}' %` /*set text = humidity*/;
+  tempEl.textContent = tempF + ' ℉'/*set text = tempF*/;
+  windEl.textContent = windMph + ' Mph' /*set text = windMph*/;
+  humidityEl.textContent = `${humidity} %` /*set text = humidity*/;
   cardBody.appendChild(heading)/*APPEND heading, tempEl, windEl, humidityEl)*/;
+  cardBody.appendChild(tempEl)/*APPEND heading, tempEl, windEl, humidityEl)*/;
+  cardBody.appendChild(windEl)/*APPEND heading, tempEl, windEl, humidityEl)*/;
+  cardBody.appendChild(humidityEl)/*APPEND heading, tempEl, windEl, humidityEl)*/;
 
   uvEl.textContent = 'UV Index: ';
   uviBadge.classList.add('btn', 'btn-sm');
@@ -169,8 +175,8 @@ function renderForecastCard(forecast, timezone) {
   cardTitle.textContent = dayjs.unix(unixTs).tz(timezone).format('M/D/YYYY');
   weatherIcon.setAttribute('src', iconUrl);
   weatherIcon.setAttribute('alt', iconDescription);
-  tempEl.textContent = tempF + ' C'/*set text = tempF*/;
-  windEl.textContent = windMph + ' KPH' /*set text = windMph*/;
+  tempEl.textContent = tempF + ' ℉'/*set text = tempF*/;
+  windEl.textContent = windMph + ' Mph' /*set text = windMph*/;
   humidityEl.textContent = humidity + ' %'/*set text = humidity*/;
 
   forecastContainer.append(col)/*APPEND col*/;
